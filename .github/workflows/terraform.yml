@@ -2,6 +2,7 @@ name: 'Terraform'
 
 on:
   workflow_dispatch:
+    inputs:
       action:
         type: choice
         description: 'Apply or Destroy'
