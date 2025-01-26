@@ -16,8 +16,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: takehome_server
-    working_dir: /app/cmd/server
     environment:
       POSTGRES_DSN: postgresql://${DB_USER}:${DB_PASSWORD}@postgres:5432/${DB_NAME}
       DEV_LOGGING: ${DEV_LOGGING}
