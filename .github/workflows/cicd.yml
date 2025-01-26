@@ -35,13 +35,100 @@ jobs:
       - name: Run tests
         run: go test -v ./...
 
+  proto-gen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      GOTOOLCHAIN: local
+      GOFLAGS: "-buildvcs=false"
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+          cache: true
+      
+      - name: Install Protobuf Tools
+        run: |
+          # Install protoc
+          sudo apt-get update
+          sudo apt-get install -y protobuf-compiler
+
+          # Install Go protobuf generators
+          go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+          go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+          
+          # Install additional protobuf generators
+          go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@latest
+          go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2@latest
+          
+          # Install mockgen for mock generation
+          go install go.uber.org/mock/mockgen@latest
+
+          # Install Buf for proto generation
+          curl -sSL https://github.com/bufbuild/buf/releases/download/v1.30.0/buf-Linux-x86_64 -o /usr/local/bin/buf
+          chmod +x /usr/local/bin/buf
+
+      - name: Generate Proto Files and Mocks
+        run: |
+          # Generate proto files
+          cd proto
+          buf generate
+          cd ..
+          
+          # Generate mocks
+          cd api/types
+          mockgen -source=api_grpc.pb.go -destination=api_mock.pb.go -package=types
+
+      - name: Upload Generated Files
+        uses: actions/upload-artifact@v4
+        with:
+          name: generated-proto
+          path: api/types/
+          retention-days: 1
+
+  build-and-cache:
+    needs: [test, proto-gen]
+    runs-on: ubuntu-latest
+    env:
+      GOTOOLCHAIN: local
+      GOFLAGS: "-buildvcs=false"
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download Generated Proto Files
+        uses: actions/download-artifact@v4
+        with:
+          name: generated-proto
+          path: api/types/
+      
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.23'
+          cache: true
+      
+      - name: Download dependencies
+        run: go mod download
+      
+      - name: Build
+        run: go build -v ./...
+
   Build:
     name: Build
-    needs: test
+    needs: [build-and-cache]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
+      - name: Download Generated Proto Files
+        uses: actions/download-artifact@v4
+        with:
+          name: generated-proto
+          path: api/types/
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
