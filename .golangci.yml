@@ -1,0 +1,23 @@
+linters:
+  disable-all: true
+  enable:
+    - gofmt
+    - govet
+    - errcheck
+    - staticcheck
+    - gosimple
+    - ineffassign
+
+linters-settings:
+  staticcheck:
+    go: "1.23"
+
+run:
+  go: "1.23"
+  issues:
+    exclude-dirs:
+      - vendor
+      - third_party
+      - .git
+      - api/types
+  timeout: 5m
