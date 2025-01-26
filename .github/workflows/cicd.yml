@@ -54,20 +54,12 @@ jobs:
           # Install protoc
           sudo apt-get update
           sudo apt-get install -y protobuf-compiler
-
-          # Install Go protobuf generators
           go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
           go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
-          
-          # Install additional protobuf generators
           go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@latest
           go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2@latest
           go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
-          
-          # Install mockgen for mock generation
           go install go.uber.org/mock/mockgen@latest
-
-          # Install Buf for proto generation
           curl -sSL https://github.com/bufbuild/buf/releases/download/v1.30.0/buf-Linux-x86_64 -o /usr/local/bin/buf
           chmod +x /usr/local/bin/buf
 
