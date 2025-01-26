@@ -33,4 +33,4 @@ min_capacity_spot          = "1"
 max_capacity_spot          = "10"
 
 #ECR
-ecr_repository_name        = "#{REPO_NAME}"
+ecr_repository_name        = "#{REPO_NAME}" # this will get replaced by github actions
