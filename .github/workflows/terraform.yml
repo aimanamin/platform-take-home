@@ -24,10 +24,7 @@ permissions:
 jobs:
   Terraform-Action:
     runs-on: ubuntu-latest
-    needs: Terraform-Formatting-Validating
-    
     steps:
-
     - name: Checkout repository
       uses: actions/checkout@v4
 
