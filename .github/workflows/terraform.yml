@@ -35,7 +35,7 @@ jobs:
       with:
         tokenPrefix: '#{'
         tokenSuffix: '}'
-        files: '["k8s/variables.tf", "k8s/terraform.tfvars"]'
+        files: '["infra/variables.tf", "infra/terraform.tfvars"]'
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
