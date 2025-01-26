@@ -2,13 +2,14 @@ package main
 
 import (
 	"context"
+	"os/signal"
+	"syscall"
+
 	"github.com/skip-mev/platform-take-home/api/server"
 	"github.com/skip-mev/platform-take-home/observability/logging"
 	"github.com/skip-mev/platform-take-home/observability/metrics"
 	"go.uber.org/zap"
 	"golang.org/x/sync/errgroup"
-	"os/signal"
-	"syscall"
 )
 
 func main() {
@@ -25,7 +26,10 @@ func main() {
 
 	eg.Go(func() error {
 		grpcServer := server.NewServer()
-		grpcServer.Start(ctx, "0.0.0.0:9008")
+		if err := grpcServer.Start(ctx, "0.0.0.0:9008"); err != nil {
+			return err
+		}
+
 		return nil
 	})
 
