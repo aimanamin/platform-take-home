@@ -31,3 +31,6 @@ max_capacity_on_demand     = "5"
 desired_capacity_spot      = "1"
 min_capacity_spot          = "1"
 max_capacity_spot          = "10"
+
+#ECR
+ecr_repository_name        = "#{REPO_NAME}"

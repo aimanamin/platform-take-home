@@ -32,6 +32,7 @@ jobs:
       uses: cschleiden/replace-tokens@v1
       env:
         POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+        REPO_NAME: ${{ secrets.REPO_NAME }}
       with:
         tokenPrefix: '#{'
         tokenSuffix: '}'
