@@ -62,6 +62,7 @@ jobs:
           # Install additional protobuf generators
           go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@latest
           go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2@latest
+          go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
           
           # Install mockgen for mock generation
           go install go.uber.org/mock/mockgen@latest
@@ -82,15 +83,15 @@ jobs:
               fi
             done
           done
-          
+
           # Generate external protocol buffers
           # echo "Generating cosmwasm protos"
           # buf generate buf.build/cosmwasm/wasmd
-          
+
           rm -r ../api/types
           mv github.com/skip-mev/platform-take-home/api/types ../api
           rm -r github.com
-          
+
           # move proto files to the right places
 
       - name: Upload Generated Files
