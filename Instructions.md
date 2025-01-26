@@ -36,4 +36,4 @@ Once a push is triggered in the main branch, the CICD should trigger the followi
 
 ## Local development
 
-To ease the setup of a local development environmente, developers should use the docker compose file created.
+To ease the setup of a local development environment, developers should use the docker compose file created.
