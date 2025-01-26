@@ -3,6 +3,7 @@
 ## Requirments
 
 - Must have a AWS credentials to configure the AWS CLI
+- Should create the appropriate S3 bucket and dynamodb table that host the terraform states and locks. see infra\backend.tf
 - Configure the following github action secrets:
   - *AWS_ACCESS_KEY_ID*: self explanatory
   - *AWS_SECRET_ACCESS_KEY*: self explanatory
