@@ -31,20 +31,6 @@ resource "aws_iam_openid_connect_provider" "eks-oidc" {
   url             = data.tls_certificate.eks-certificate.url
 }
 
-
-# AddOns for EKS Cluster
-resource "aws_eks_addon" "eks-addons" {
-  for_each      = { for idx, addon in var.addons : idx => addon }
-  cluster_name  = aws_eks_cluster.eks[0].name
-  addon_name    = each.value.name
-  addon_version = each.value.version
-
-  depends_on = [
-    aws_eks_node_group.ondemand-node,
-    aws_eks_node_group.spot-node
-  ]
-}
-
 # NodeGroups
 resource "aws_eks_node_group" "ondemand-node" {
   cluster_name    = aws_eks_cluster.eks[0].name
@@ -108,4 +94,26 @@ resource "aws_eks_node_group" "spot-node" {
   disk_size = 50
 
   depends_on = [aws_eks_cluster.eks]
+}
+
+data "tls_certificate" "eks-certificate" {
+  url = aws_eks_cluster.eks[0].identity[0].oidc[0].issuer
+}
+
+data "aws_iam_policy_document" "eks_oidc_assume_role_policy" {
+  statement {
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+    effect  = "Allow"
+
+    condition {
+      test     = "StringEquals"
+      variable = "${replace(aws_iam_openid_connect_provider.eks-oidc.url, "https://", "")}:sub"
+      values   = ["system:serviceaccount:default:aws-test"]
+    }
+
+    principals {
+      identifiers = [aws_iam_openid_connect_provider.eks-oidc.arn]
+      type        = "Federated"
+    }
+  }
 }

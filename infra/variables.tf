@@ -43,12 +43,6 @@ variable "max_capacity_on_demand" {}
 variable "desired_capacity_spot" {}
 variable "min_capacity_spot" {}
 variable "max_capacity_spot" {}
-variable "addons" {
-  type = list(object({
-    name    = string
-    version = string
-  }))
-}
 
 # ECR
 variable "ecr_repository_name" {
