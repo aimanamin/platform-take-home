@@ -69,5 +69,5 @@ variable "db_instance_username" {
 
 variable "db_instance_password" {
   description = "The password for the RDS PostgreSQL database."
-  default     = "__secure-password__" # this will get replaced by github actions
+  default     = "#{POSTGRES_PASSWORD}" # this will get replaced by github actions
 }
