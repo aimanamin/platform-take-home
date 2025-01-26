@@ -23,6 +23,7 @@ jobs:
 
   Build:
     name: Build
+    needs: lint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
