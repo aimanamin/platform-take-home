@@ -76,5 +76,4 @@ func StartGRPCGateway(ctx context.Context, host string, port int) error {
 // healthCheckHandler handles the /health endpoint.
 func healthCheckHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("ok"))
 }
