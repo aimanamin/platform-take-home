@@ -34,7 +34,7 @@ jobs:
         POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
       with:
         tokenPrefix: '#{'
-        tokenSuffix: '}#'
+        tokenSuffix: '}'
         files: '["k8s/variables.tf", "k8s/terraform.tfvars"]'
 
     - name: Setup Terraform
