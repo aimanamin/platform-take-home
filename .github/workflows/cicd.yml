@@ -21,9 +21,23 @@ jobs:
       - name: Run golangci-lint
         run: golangci-lint run ./...
 
+  test:
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.23'
+
+      - name: Run tests
+        run: go test -v ./...
+
   Build:
     name: Build
-    needs: lint
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
