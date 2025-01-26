@@ -6,3 +6,4 @@ tables.db
 tmp/
 infra/
 .github/
+k8s/
